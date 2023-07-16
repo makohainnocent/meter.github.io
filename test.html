@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS styles for the draggable div */
+    .draggable {
+      width: 200px;
+      height: 20px;
+      background-color: pink;
+      position: absolute;
+      touch-action: none;
+      z-index: 1000;
+      opacity: 0.5;
+      border-radius: 5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: palevioletred;
+    }
+  </style>
+</head>
+<body>
+  <!-- Draggable div -->
+  <div id="myDiv" class="draggable"></div>
+
+  <!-- Video element for camera stream -->
+  <video id="videoElement" autoplay playsinline></video>
+
+  <!-- Capture button -->
+  <button onclick="captureImage()">Capture Image</button>
+
+  <!-- Grayscale conversion button -->
+  <button onclick="convertToGrayscale()">Convert to Grayscale</button>
+
+  <!-- Stop camera button -->
+  <button onclick="stopCamera()">Stop Camera</button>
+
+  <!-- Start camera button -->
+  <button onclick="startCamera()">Start Camera</button>
+
+  <!-- Save image button -->
+  <button onclick="saveImage()">Save Image</button>
+
+  <!-- Camera facing mode buttons -->
+  <button onclick="switchCamera('user')">Front Camera</button>
+  <button onclick="switchCamera('environment')">Rear Camera</button>
+
+  <!-- Captured image element -->
+  <img id="capturedImage" alt="Captured Image">
+
+  <script>
+    // Get the draggable div element
+    var draggableDiv = document.getElementById('myDiv');
+
+    // Video element for camera stream
+    var videoElement = document.getElementById('videoElement');
+
+    // MediaStream object for camera
+    var mediaStream;
+
+    // Function to start the camera
+    async function startCamera() {
+      try {
+        // Request permission to access the camera
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        // Set the media stream as the source of the video element
+        videoElement.srcObject = stream;
+
+        // Store the media stream for later use
+        mediaStream = stream;
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+      }
+    }
+
+    // Function to stop the camera
+    function stopCamera() {
+      // Stop the media stream tracks
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        videoElement.srcObject = null; // Clear the video element source
+      }
+    }
+
+    // Function to capture an image from the video stream
+    function captureImage() {
+      // Create a canvas element with the same dimensions as the video
+      var canvas = document.createElement('canvas');
+      canvas.width = videoElement.videoWidth;
+      canvas.height = videoElement.videoHeight;
+      var ctx = canvas.getContext('2d');
+
+      // Draw the video frame onto the canvas
+      ctx.drawImage(
+        videoElement,
+        0, 0, canvas.width, canvas.height
+      );
+
+      // Calculate the dimensions and position of the draggable div
+      var rectX = draggableDiv.offsetLeft;
+      var rectY = draggableDiv.offsetTop;
+      var rectWidth = draggableDiv.offsetWidth;
+      var rectHeight = draggableDiv.offsetHeight;
+
+      // Create a new canvas element with the dimensions of the draggable div
+      var croppedCanvas = document.createElement('canvas');
+      croppedCanvas.width = rectWidth;
+      croppedCanvas.height = rectHeight;
+      var croppedCtx = croppedCanvas.getContext('2d');
+
+      // Draw the cropped portion from the video canvas onto the new canvas
+      croppedCtx.drawImage(
+        canvas,
+        rectX, rectY, rectWidth, rectHeight,
+        0, 0, rectWidth, rectHeight
+      );
+
+      // Get the captured image data URL
+      var capturedImageData = croppedCanvas.toDataURL();
+
+      // Set the captured image as the source of the captured image element
+      var capturedImage = document.getElementById('capturedImage');
+      capturedImage.src = capturedImageData;
+    }
+
+    // Function to convert the captured image to grayscale
+    function convertToGrayscale() {
+      // Get the captured image element
+      var capturedImage = document.getElementById('capturedImage');
+
+      // Create a canvas element
+      var canvas = document.createElement('canvas');
+      canvas.width = capturedImage.width;
+      canvas.height = capturedImage.height;
+      var ctx = canvas.getContext('2d');
+
+      // Draw the captured image on the canvas
+      ctx.drawImage(capturedImage, 0, 0);
+
+      // Get the pixel data from the canvas
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+
+      // Loop through each pixel and convert it to grayscale
+      for (var i = 0; i < data.length; i += 4) {
+        // Get the RGB components of the pixel
+        var r = data[i];
+        var g = data[i + 1];
+        var b = data[i + 2];
+
+        // Calculate the grayscale value using the average method
+        var gray = (r + g + b) / 3;
+
+        // Set the RGB components of the pixel to the grayscale value
+        data[i] = gray;
+        data[i + 1] = gray;
+        data[i + 2] = gray;
+      }
+
+      // Put the modified pixel data back to the canvas
+      ctx.putImageData(imageData, 0, 0);
+
+      // Set the converted grayscale image as the source of the captured image element
+      capturedImage.src = canvas.toDataURL();
+    }
+
+    // Function to switch the camera facing mode
+    async function switchCamera(facingMode) {
+      stopCamera();
+      await startCamera();
+      const videoTracks = mediaStream.getVideoTracks();
+      const constraints = {
+        video: { facingMode: { exact: facingMode } },
+      };
+      videoTracks[0].applyConstraints(constraints);
+    }
+
+    // Function to save the captured image on the server
+    function saveImage() {
+      // Get the captured image data URL
+      var capturedImageData = document.getElementById('capturedImage').src;
+
+      // Create a new XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+
+      // Configure the request
+      xhr.open('POST', 'http://localhost/meter/App/save-image.php', true);
+
+      // Set the content type header for sending image data
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      // Send the captured image data as the request body
+      xhr.send('imageData=' + encodeURIComponent(capturedImageData));
+
+      // Handle the response from the server
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            console.log('Image saved successfully.');
+          } else {
+            console.error('Failed to save the image.');
+          }
+        }
+      };
+    }
+
+    // Function to handle the start of a drag
+    function startDrag(e) {
+      isDragging = true;
+      var touch = e.targetTouches[0];
+      offsetX = touch.clientX - draggableDiv.offsetLeft;
+      offsetY = touch.clientY - draggableDiv.offsetTop;
+    }
+
+    // Function to handle dragging
+    function drag(e) {
+      if (!isDragging) return;
+      e.preventDefault(); // Prevent scrolling on touch devices
+
+      var touch = e.targetTouches[0];
+
+      // Calculate the new position of the div
+      var x = touch.clientX - offsetX;
+      var y = touch.clientY - offsetY;
+
+      // Update the position of the div
+      draggableDiv.style.left = x + 'px';
+      draggableDiv.style.top = y + 'px';
+    }
+
+    // Function to handle the end of a drag
+    function endDrag() {
+      isDragging = false;
+    }
+
+    // Event listeners for touch events
+    draggableDiv.addEventListener('touchstart', startDrag);
+    document.addEventListener('touchmove', drag);
+    document.addEventListener('touchend', endDrag);
+
+    // Start the camera when the page loads
+    startCamera();
+  </script>
+</body>
+</html>

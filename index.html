@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" 
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCDs368Jp-mAflfjdEQxm25-5QGeRFBrMQ"></script>
+    <link rel="stylesheet" type="text/css" href="mobileui/style.css">
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#004d00">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#004d00">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#004d00">
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="utf-8">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <style>
+      body {
+        background-image: url('img/bk.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+      }
+      #titleDiscoveryNow {
+        font-family: 'Chewy', cursive;
+        font-size: 45px;
+        line-height: 24px;
+        z-index: 33;
+        position: relative;
+      }
+    </style>
+    <title>smart Meter</title>
+  </head>
+  <body class="cover vertical-align-center blue-grey-900 align-center blend-soft-light">
+    <div class="space"></div>
+    <div class="space"></div>
+    <div class="space"></div>
+    <!--<p class="text-white">WELCOME TO</p>-->
+    <h1 id="titleDiscoveryNow" class="text-amber">SmartMeter</h1>
+    <!--<p class="text-grey-300">Find good music all the day for you</p>-->
+    <div class="space"></div>
+    <div class="space"></div>
+    <div class="row vertical-align-center">
+      <div class="col-90 col-center">
+        <div class="list no-border opacity-60" id="LoginForm">
+          <div class="item icon ion-pound border-amber text-amber border-bottom">
+            <input class="placeholder-white text-white " type="text" placeholder="Enter meter number" id="meter_no">
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="space"></div>
+        <button class="border-amber text-amber full" onclick="Login()">LOGIN</button>
+      </div>
+    </div>
+    <div class="header bottom gradient">
+      <button class="text-grey" onclick="openPage('Register')">REGISTER</button>
+    </div>
+
+    <script type="text/javascript" src="mobileui/mobileui.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script>
+    </script>
+  </body>
+</html>

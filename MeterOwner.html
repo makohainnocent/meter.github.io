@@ -1,0 +1,49 @@
+<div class="page white">
+  <body>
+    <div class="header text-white black">
+      <div class="left" onclick="backPage()">
+        <button class="icon ion-android-arrow-back"></button>
+      </div>
+      <div class="right">
+        <button class="icon ion-android-more-vertical" onclick="openPopover('popover1')"></button>
+      </div>
+    </div>
+    <div class="popover" id="popover1">
+      <div class="list" onclick="openPage('deposit',{},loadDeposit)">
+        <div class="item" ><h1>Pay via mobile money</h1></div>
+      </div>
+    </div>
+    <div class="content has-header">
+      <div class="cover grey-900 align-center blend-soft-light" style="background-image:url(/img/backtop.png)">
+        <img class="avatar circle border-white shadow" src="img/me.png">
+        <h1 class="text-white" id="meter_owner">Carter Hudson</h1>
+        <p id="meter_number">+55 45</p>
+        <button onclick="openPage('reading',{},loadReading)" class="amber big circle float-bottom-right icon ion-android-camera"></button>
+      </div>
+      <div class="list">
+        <div class="item">
+          <div class="left">
+              <i class="icon icon-big ion-speedometer amber"></i>
+          </div>
+          <h2>Meter Reading</h2>
+          <p class="text-grey" id="meter_reading">+55 7979 325 655</p>
+        </div>
+        <div class="item">
+          <div class="left">
+              <i class="icon icon-big ion-podium amber"></i>
+          </div>
+          <h2>Amount of water used</h2>
+          <p class="text-grey" id="amount_of_water_used">+55 8989 325 655</p>
+        </div>
+        <div class="item">
+          <div class="left">
+              <i class="icon icon-big ion-card amber"></i>
+          </div>
+          <h2>Amount Paid</h2>
+          <p class="text-grey" id="amount_of_money_paid">+55 8989 325 655</p>
+        </div>
+      
+      </div>
+    </div>
+  </body>
+</div>

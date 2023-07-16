@@ -1,0 +1,33 @@
+<div class="page white">
+  <body>
+    <div class="header text-white black">
+      <div class="left" onclick="backPage()">
+        <button class="icon ion-android-arrow-back"></button>
+      </div>
+      <h1>Meter Reading</h1>
+    </div>
+    <div class="content">
+
+        <video id="videoElement" autoplay playsinline style="position:relative"></video>
+      
+        <!-- Draggable div -->
+        <div id="myDiv" class="draggable"></div>
+
+      <div class="list padding no-border">
+        <div class="item  amber radius">
+            <input type="text" placeholder="reading" id="meter_reading">
+          </div>
+      </div>
+       <!-- Captured image element -->
+       <img id="capturedImage" alt="Captured Image" style="z-index: 1000;" src="img/meter.jpg">
+    </div>
+    <div class="footer black shadow text-amber tab" style="z-index: ;">
+        <button class="icon ion-social-instagram active icon-big text-amber" onclick="startCamera()"></button>
+        <button class="icon ion-android-checkbox-blank icon-big text-amber" onclick="stopCamera()"></button></button>
+        <button class="icon ion-ios-reverse-camera icon-big text-amber" onclick="switchCamera('user')"></button>
+        <button class="icon ion-ios-color-wand icon-big text-amber" onclick="convertToGrayscale()"></button>
+        <button class="icon ion-record icon-big text-amber" onclick="captureImage()"></button>
+        <button class="icon ion-paper-airplane icon-big text-amber" onclick="saveImage()"></button>
+    </div>
+  </body>
+</div>

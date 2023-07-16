@@ -1,0 +1,22 @@
+.input-no-highlight {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    background-color: transparent;
+  }
+  
+
+  .draggable {
+    width: 300px;
+    height: 50px;
+    background-color: green;
+    position: absolute;
+    touch-action: none;
+    z-index: 1000;
+    opacity: 0.5;
+    border-radius: 5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: greenyellow;
+  }

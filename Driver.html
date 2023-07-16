@@ -1,0 +1,49 @@
+<div class="page">
+    <body class="padding grey-100 has-header has-sub-header">
+      <div class="menu pink-900 cover blend-multiply" id="menuDiscover" style="background-image:url(img/feed.jpg)">
+        <div class="cover align-center">
+          <img class="avatar circle border-pink-900 shadow" src="img/n.png">
+          <h1 class="text-teal-300" id="username">...</h1>
+          <p class="text-grey" id="phone">...</p>
+        </div>
+        <div class="list no-border">
+          <a class="item space-small">
+            <div class="left">
+              <i class="icon ion-android-exit grey-300"></i>
+            </div>
+            <h1 class="text-grey-300 left" onclick="backPage()">Logout</h1>
+          </a>
+        </div>
+      </div>
+        <div class="header pink-900 has-content">
+          <div class="left" onclick="openMenu('menuDiscover')">
+            <button class="icon ion-navicon"></button>
+          </div>
+          <h1 class="left">SmartBin</h1>
+          
+          
+        </div>
+        
+        <div class="content grey-100">
+          <div class="space"></div>
+          <div class="space"></div>
+          <div class="space"></div>
+          <div id="TasksTemplate" style="display: none;">
+            <div class="item white mark border-pink-900 margin-button shadow">
+              <h2 style="padding-left: 50px;text-align: left;"><strong class="text-align-center">#name</strong></h2>
+              <h6 class="text-align-top left  text-green" onclick="doneTask(#task)"><i class="icon ion-android-done-all"></i></h6>
+              <h6 class="text-align-top right  text-blue" onclick="directionTask(#task)"><i class="icon ion-paper-airplane"></i></h6>
+              <p style="padding-left: 50px;text-align: left;" class="text-grey text-align-center">#name2</p>
+              <p style="padding-left: 50px;text-align: left;" class="text-blue text-align-center">#phone</p>
+              <p style="padding-left: 50px;text-align: left;" class="text-purple">#description</p>
+            </div>
+          </div>
+          
+          <div class="list padding no-border" id="TasksArea">
+            
+          </div>
+          <div class="space-huge"></div>
+        </div>
+        
+      </body>
+</div>

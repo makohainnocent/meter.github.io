@@ -1,0 +1,125 @@
+<div class="page">
+    <body class="padding pink-50 has-header has-sub-header">
+      <div class="menu pink-900 cover blend-multiply" id="menuDiscover" style="background-image:url(img/feed.jpg)">
+        <div class="cover align-center">
+          <img class="avatar circle border-pink-900 shadow" src="img/n.png">
+          <h1 class="text-teal-300" id="username">...</h1>
+          <p class="text-grey" id="phone">...</p>
+        </div>
+        <div class="list no-border">
+          <a class="item space-small">
+            <div class="left">
+              <i class="icon ion-social-usd grey-300"></i>
+            </div>
+            <h1 class="text-grey-300" style="text-align: left;" id="amount">...</h1>
+          </a>
+          <a class="item space-small">
+            <div class="left">
+              <i class="icon ion-ios-calculator grey-300"></i>
+            </div>
+            <h1 class="text-grey-300 left" onclick="openPage('cashout',{},loadCashout)">Cashout</h1>
+          </a>
+          <a class="item space-small">
+            <div class="left">
+              <i class="icon ion-android-exit grey-300"></i>
+            </div>
+            <h1 class="text-grey-300 left" onclick="backPage()">Logout</h1>
+          </a>
+        </div>
+      </div>
+        <div class="header pink-900">
+          <div class="left" onclick="openMenu('menuDiscover')">
+            <button class="icon ion-navicon"></button>
+          </div>
+          <h1 class="left">SmartBin</h1>
+          
+          
+        </div>
+        <div class="header pink-900 sub shadow tab has-content">
+          <button class="icon ion-soup-can active" onclick="openTab('tabBins')">Bins</button>
+          <button class="icon ion-calendar" onclick="openTab('tabTasks')">Tasks</button>
+          <button class="icon ion-android-car" onclick="openTab('tabDrivers')">Drivers</button>
+        </div>
+        <div class="content">
+        <div class="tab-content active" id="tabBins">
+          <div class="space-huge"></div>
+          
+          <div class="space"></div>
+          <div id="BinsTemplate" style="display:none;">
+            <div class="row padding no-padding-top">
+              <div class="col cover radius no-padding" style="background-image:url(img/feed.jpg)">
+                <div class="right text-small padding text-white">
+                  #paid
+                  <i class="icon ion-ios-analytics"></i><span class="text-strong">#parcent</span>
+                </div>
+                <div class="left padding no-padding-top  text-strong">
+                  <button class="icon ion-trash-b text-white" onclick="deleteBin(#bin)"></button>
+                  <button class="icon ion-forward text-white" onclick="emptyBin(#bin)"></button>
+                </div>
+                <div class="space-huge"></div>
+                <div class="space-big"></div>
+                <div class="bottom gradient padding radius ">
+                  <h1 class="text-white text-small" style="text-align: left;"><i class="icon ion-android-pin"></i><span>#address</span></h1>
+                  <h1 class="text-white text-small" style="text-align: left;"><i class="icon ion-android-contact"></i><span>#name</span></h1>
+                  <h1 class="text-white text-small" style="text-align: left;"><i class="icon ion-android-call"></i><span>#phone</span></h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="BinsArea">
+
+          </div>
+          
+        </div>
+        <div class="tab-content grey-100" id="tabTasks">
+          <div class="space-huge"></div>
+          <div id="TasksTemplate" style="display: none;">
+            <div class="item white mark border-pink-900 margin-button shadow">
+              <h2><strong>#name</strong></h2>
+              <h6 class="text-align-top right text-small" onclick="deleteTask(#task)"><i class="icon ion-trash-a"></i></h6>
+              <p class="text-grey">#name2</p>
+              <p class="text-purple">#description</p>
+            </div>
+          </div>
+          
+          <div class="list padding grey-100" id="TasksArea">
+            
+          </div>
+        </div>
+        <div class="tab-content" id="tabDrivers">
+            
+            <div class="space-huge"></div>
+            <div style="display:none" id="DriversTemplate">
+              <div class="item">
+                <div class="left">
+                  <img class="avatar circle" src="img/person.png" >
+                </div>
+                <h2 class="text-strong text-black" style="text-align: left;">#name</h2>
+                <p class="text-small text-align-top right"  onclick="deleteDriver(#driver)"><i class="icon ion-trash-b grey"></i></p>
+                <p class="text-grey-700 " style="text-align: left;padding-left: 50px;"><i class="icon ion-ios-telephone grey"></i>#phone</p>
+                <p class="text-grey-700 " style="text-align: left;padding-left: 50px;"><i class="icon ion-pricetag grey"></i>#id</p>
+              </div>
+            </div>
+            
+            <div class="list">
+              <div class="item" onclick="openPage('RegisterDriver')">
+                <div class="left">
+                  <div class="icon-circle green">
+                    <i class="icon ion-android-add"></i>
+                  </div>
+                </div>
+                <h2 class="text-strong text-grey-800" style="text-align: left;">New</h2>
+                <p class="text-grey-700 ellipsis" style="text-align: left;">add new driver to the system</p>
+              </div>
+              <div class="item grey-200">
+                <p class="text-green text-small">current drivers</p>
+              </div>
+            </div>
+            <div class="list" id="DriversArea">
+                
+            </div>
+        </div>
+        </div>
+        
+      </body>
+</div>

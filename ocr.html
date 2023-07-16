@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OCR Example</title>
+</head>
+<body>
+  <h1>OCR Example</h1>
+
+  <script>
+    const imageUri = 'http://simonbust.ueuo.com/simon/meter.jpg';
+    const apiKey = 'AIzaSyCDs368Jp-mAflfjdEQxm25-5QGeRFBrMQ';
+
+    async function performOCR(imageUri, apiKey) {
+      const url = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+      const requestBody = {
+        requests: [
+          {
+            image: {
+              source: {
+                imageUri: imageUri
+              }
+            },
+            features: [
+              {
+                type: 'TEXT_DETECTION'
+              }
+            ]
+          }
+        ]
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const extractedText = data.responses[0].textAnnotations[0].description;
+          console.log('Extracted Text:', extractedText);
+        } else {
+          throw new Error('Error performing OCR:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error performing OCR:', error);
+      }
+    }
+
+    performOCR(imageUri, apiKey);
+  </script>
+</body>
+</html>
