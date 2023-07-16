@@ -1,5 +1,8 @@
-var apiUrl="http://localhost/meter/Api/"
-var appUrl="http://localhost/meter/App/"
+/*var apiUrl="http://localhost/meter/Api/"
+var appUrl="http://localhost/meter/App/"*/
+
+var apiUrl="http://meter.ueuo.com/meter/Api/"
+var appUrl="http://meter.ueuo.com/meter/App/"
 
 
 //register bin owners
