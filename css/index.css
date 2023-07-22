@@ -19,4 +19,14 @@
     border-width: 5px;
     border-style: solid;
     border-color: greenyellow;
+    left: 50%;
+    top: 90px;
+    transform: translate(-50%);
+  }
+
+  #videoElement {
+    position: relative;
+    width: 100%;
+    height: auto; /* Ensure the height is automatically adjusted */
+    max-height: 250px;
   }

@@ -8,26 +8,27 @@
     </div>
     <div class="content">
 
-        <video id="videoElement" autoplay playsinline style="position:relative"></video>
+        <video id="videoElement" autoplay playsinline  class="black"></video>
       
         <!-- Draggable div -->
         <div id="myDiv" class="draggable"></div>
 
       <div class="list padding no-border">
         <div class="item  amber radius">
-            <input type="text" placeholder="reading" id="meter_reading">
+            <input type="text" placeholder="reading" id="meter_value">
           </div>
       </div>
        <!-- Captured image element -->
        <img id="capturedImage" alt="Captured Image" style="z-index: 1000;" src="img/meter.jpg">
     </div>
-    <div class="footer black shadow text-amber tab" style="z-index: ;">
-        <button class="icon ion-social-instagram active icon-big text-amber" onclick="startCamera()"></button>
+    <div class="footer black shadow text-amber tab" style="z-index:1000;">
+        <button class="icon ion-android-camera active icon-big text-amber" onclick="startCamera()"></button>
         <button class="icon ion-android-checkbox-blank icon-big text-amber" onclick="stopCamera()"></button></button>
-        <button class="icon ion-ios-reverse-camera icon-big text-amber" onclick="switchCamera('user')"></button>
+        <button class="icon ion-android-sync icon-big text-amber" onclick="switchCamera()"></button>
         <button class="icon ion-ios-color-wand icon-big text-amber" onclick="convertToGrayscale()"></button>
-        <button class="icon ion-record icon-big text-amber" onclick="captureImage()"></button>
+        <button class="icon ion-android-radio-button-on icon-big text-amber" onclick="captureImage()"></button>
         <button class="icon ion-paper-airplane icon-big text-amber" onclick="saveImage()"></button>
+        <button class="icon ion-android-checkbox icon-big text-amber" onclick="sendReading()"></button>
     </div>
   </body>
 </div>

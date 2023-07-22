@@ -1,5 +1,5 @@
-/*var apiUrl="http://localhost/meter/Api/"
-var appUrl="http://localhost/meter/App/"*/
+//var apiUrl="http://localhost/meter/Api/"
+//var appUrl="http://localhost/meter/App/"
 
 var apiUrl="http://meter.ueuo.com/meter/Api/"
 var appUrl="http://meter.ueuo.com/meter/App/"
@@ -103,6 +103,7 @@ function LoadSystem(params){
 
 //initialise meterOwner page
 function LoadMeterOwner(params){
+  localStorage.setItem('meter_no', params.meter_no);
   var obj={"meter_no":params.meter_no}
   loading("wait..")
   MobileUI.ajax.get(apiUrl+"GetMeter.php")
@@ -892,10 +893,18 @@ var mediaStream;
 
 var isDragging;
 // Function to start the camera
+
+var facingMode='environment'
 async function startCamera() {
   try {
     // Request permission to access the camera
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: {
+          exact: facingMode
+        }
+      }
+    });
 
     // Set the media stream as the source of the video element
     videoElement.srcObject = stream;
@@ -1056,12 +1065,19 @@ function captureImage() {
 }
 
 // Function to switch the camera facing mode
-async function switchCamera(facingMode) {
+async function switchCamera() {
+  newFacingMode=facingMode==='user'?'environment':'user'
+  facingMode=newFacingMode
+  console.log(facingMode)
   stopCamera();
   await startCamera();
   const videoTracks = mediaStream.getVideoTracks();
   const constraints = {
-    video: { facingMode: { exact: facingMode } },
+    video: {
+      facingMode: {
+        exact: facingMode
+      }
+    },
   };
   videoTracks[0].applyConstraints(constraints);
 }
@@ -1093,6 +1109,7 @@ function saveImage() {
         if(response.indexOf("Error")!=-1){
           alert("error failed to save image to server")
         }else{
+          //var imageUri=apiUrl+"img/"+response
           var imageUri=apiUrl+"img/"+response
           const apiKey = 'AIzaSyCDs368Jp-mAflfjdEQxm25-5QGeRFBrMQ';
           console.log(imageUri)
@@ -1138,6 +1155,8 @@ function endDrag() {
 
 
 async function performOCR(imageUri, apiKey) {
+  //$("#meter_value").val(10)
+  //return
   const url = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
   const requestBody = {
     requests: [
@@ -1170,7 +1189,7 @@ async function performOCR(imageUri, apiKey) {
       console.log(data)
       const extractedText = data.responses[0].textAnnotations[0].description;
       console.log('Extracted Text:', extractedText);
-      $("#meter_reading").val(extractedText)
+      $("#meter_value").val(extractedText)
     } else {
       throw new Error('Error performing OCR:', response.status, response.statusText);
     }
@@ -1179,5 +1198,84 @@ async function performOCR(imageUri, apiKey) {
   }
 }
 
+function comparePoints(currentLatLng) {
+  var previousLatLng = localStorage.getItem('previousLatLng'); // Use 'previousLatLng' as the key
+
+  console.log(previousLatLng);
+  console.log(currentLatLng);
+  if (previousLatLng == null || previousLatLng.trim() === '') {
+    console.log("previous latlong is empty");
+    // Store the currentLatLng in the local storage with the key 'previousLatLng'
+    localStorage.setItem('previousLatLng', currentLatLng);
+    return;
+  }
+
+  if (currentLatLng == null || currentLatLng.trim() === '') {
+    console.log("current latlong is empty");
+    alert("Please Enable location on your smart phone to proceed!")
+    return;
+  }
+   
+  
+  localStorage.setItem('previousLatLng', currentLatLng);
+  const [lat1, lng1] = previousLatLng.split(',');
+  const [lat2, lng2] = currentLatLng.split(',');
+  const distance = getDistanceFromLatLonInMeters(parseFloat(lat1), parseFloat(lng1), parseFloat(lat2), parseFloat(lng2));
+  console.log(distance);
+  if (Number(distance)>1){
+    alert("the system has detected you taking this photo from a place other than your meter!. this not allowed if you think its an error please contact support")
+    navigator.vibrate([500, 200, 300]);
+    return
+  }
+  localStorage.setItem('previousLatLng', currentLatLng);
+  sendReadingToServer()
+}
 
 
+function degToRad(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+  const earthRadiusKm = 6371; // Radius of the Earth in kilometers
+  const dLat = degToRad(lat2 - lat1);
+  const dLon = degToRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distanceInKm = earthRadiusKm * c;
+  const distanceInMeters = distanceInKm * 1000;
+  return distanceInMeters;
+}
+
+
+function sendReading(){
+  getCurrentLocation(comparePoints)
+}
+
+function sendReadingToServer(){
+  loading('processing...')
+  var meter_no=localStorage.getItem('meter_no')
+  var meter_reading=$("#meter_value").val()
+  const obj={"meter_no":meter_no,"meter_reading":meter_reading}
+  console.log(obj)
+  MobileUI.ajax.get(apiUrl+"UpdateReading.php")
+  .query(obj)
+  .end((err, res) => {
+    closeLoading()
+    if (err) {
+      console.error(err);
+      alert("an error occurred! please try again later")
+    } else {
+      console.log(res.text);
+      if(res.text.indexOf("Error")!=-1){
+        alert(res.text)
+      }else{
+        alert("meter reading successfully uploaded")
+      }
+    }
+  });
+}
